@@ -1,0 +1,12 @@
+# midi/ and remote-buttons/
+mido>=1.3.0
+python-rtmidi>=1.5.0
+pyserial
+# sketches/
+numpy
+pygame
+PyOpenGL
+opencv-python
+mediapipe>=0.10.14,<=0.10.21   # 1.x dropped the `solutions` API the hand and face sketches use
+comtypes; sys_platform == "win32"   # kinect/kinect_theremin_demo_comtypes.py
+# theremin_depth_splat.py also needs torch and a Depth Anything V2 checkout (see README)

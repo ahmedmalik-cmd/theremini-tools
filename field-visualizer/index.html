@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Theremini Field Visualizer</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="panel panel--info">
+        <p class="eyebrow">Moog Theremini / Option 1</p>
+        <h1>Field Disturbance Visualizer</h1>
+        <p class="lede">
+          A live proxy view of the Theremini's invisible field using Web MIDI.
+          Move near the antenna and watch the disturbance bend the field.
+        </p>
+
+        <div class="actions">
+          <button id="connect-button" type="button">Connect MIDI</button>
+          <span id="midi-status" class="status-pill">Waiting for MIDI access</span>
+        </div>
+
+        <dl class="telemetry telemetry--compact">
+          <div>
+            <dt>Browser MIDI</dt>
+            <dd id="midi-support">Unknown</dd>
+          </div>
+          <div>
+            <dt>Detected Inputs</dt>
+            <dd id="input-count">0</dd>
+          </div>
+        </dl>
+
+        <div class="input-list">
+          <p class="input-list__label">Available MIDI inputs</p>
+          <ul id="input-list"></ul>
+        </div>
+
+        <div class="scene-picker" aria-label="Scene mode">
+          <button class="scene-button" data-scene-mode="3d" data-active="true" type="button">
+            3D Sculpture
+          </button>
+          <button class="scene-button" data-scene-mode="2d" data-active="false" type="button">
+            2D Field
+          </button>
+        </div>
+
+        <div class="mapping-panel">
+          <p class="input-list__label">Input Blend</p>
+          <div class="scene-picker" aria-label="Input mode">
+            <button class="scene-button" data-input-mode="midi" data-active="false" type="button">
+              MIDI Live
+            </button>
+            <button class="scene-button" data-input-mode="kinect" data-active="true" type="button">
+              Kinect Live
+            </button>
+            <button class="scene-button" data-input-mode="hybrid" data-active="false" type="button">
+              Hybrid
+            </button>
+            <button class="scene-button" data-input-mode="lab" data-active="false" type="button">
+              Lab Only
+            </button>
+          </div>
+          <p class="note">
+            Hybrid lets us keep the Theremini active while layering in quick Kinect/foil/ultrasonic experiments.
+          </p>
+        </div>
+
+        <dl class="telemetry">
+          <div>
+            <dt>Input</dt>
+            <dd id="input-name">None</dd>
+          </div>
+          <div>
+            <dt>Kinect Bridge</dt>
+            <dd id="kinect-status">Connecting to Kinect bridge...</dd>
+          </div>
+          <div>
+            <dt>Tracked People</dt>
+            <dd id="tracked-people">0</dd>
+          </div>
+          <div>
+            <dt>Pitch Proxy</dt>
+            <dd id="pitch-value">0.000</dd>
+          </div>
+          <div>
+            <dt>Volume Proxy</dt>
+            <dd id="volume-value">0.000</dd>
+          </div>
+          <div>
+            <dt>Disturbance</dt>
+            <dd id="disturbance-value">0.000</dd>
+          </div>
+          <div>
+            <dt>Motion</dt>
+            <dd id="motion-value">0.000</dd>
+          </div>
+        </dl>
+
+        <div class="mapping-panel">
+          <p class="input-list__label">Signal Mapping</p>
+          <label class="mapping-row">
+            <span>Pitch Field</span>
+            <select id="pitch-source"></select>
+          </label>
+          <label class="mapping-row">
+            <span>Volume Field</span>
+            <select id="volume-source"></select>
+          </label>
+          <label class="mapping-row">
+            <span>Intensity</span>
+            <select id="intensity-source"></select>
+          </label>
+        </div>
+
+        <div class="mapping-panel">
+          <p class="input-list__label">Experiment Lab</p>
+          <p class="note">
+            Quick stand-in controls for Kinect person/face separation, foil coupling or shielding, and ultrasonic distance.
+          </p>
+
+          <div class="profile-grid">
+            <button class="scene-button" data-lab-profile="soloFace" data-active="true" type="button">
+              Solo Face
+            </button>
+            <button class="scene-button" data-lab-profile="duoSplit" data-active="false" type="button">
+              Duo Split
+            </button>
+            <button class="scene-button" data-lab-profile="foilCoupled" data-active="false" type="button">
+              Foil Near Antenna
+            </button>
+            <button class="scene-button" data-lab-profile="shieldedCage" data-active="false" type="button">
+              Shielded Cage
+            </button>
+            <button class="scene-button" data-lab-profile="ultrasonicSweep" data-active="false" type="button">
+              Ultrasonic Sweep
+            </button>
+          </div>
+
+          <div class="profile-summary">
+            <strong id="lab-profile-name">Solo face lock</strong>
+            <p id="lab-profile-note" class="note">
+              One person isolated in front of the Kinect. Strong face focus, modest body depth, clean control.
+            </p>
+          </div>
+
+          <label class="mapping-row" data-lab-signal="bodyDepth">
+            <span>Body Depth Presence</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.38" />
+            <output>0.38</output>
+          </label>
+          <label class="mapping-row" data-lab-signal="personSeparation">
+            <span>Person Separation</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.18" />
+            <output>0.18</output>
+          </label>
+          <label class="mapping-row" data-lab-signal="faceFocus">
+            <span>Face Focus</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.88" />
+            <output>0.88</output>
+          </label>
+          <label class="mapping-row" data-lab-signal="foilCoupling">
+            <span>Foil Coupling</span>
+            <input type="range" min="0" max="1" step="0.01" value="0" />
+            <output>0.00</output>
+          </label>
+          <label class="mapping-row" data-lab-signal="shielding">
+            <span>Shielding / Cage</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.02" />
+            <output>0.02</output>
+          </label>
+          <label class="mapping-row" data-lab-signal="ultrasonicDistance">
+            <span>Ultrasonic Distance</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.72" />
+            <output>0.72</output>
+          </label>
+        </div>
+
+        <div class="input-list">
+          <p class="input-list__label">Most Active Controllers</p>
+          <ul id="cc-activity"></ul>
+        </div>
+
+        <div class="input-list">
+          <p class="input-list__label">Recent MIDI Messages</p>
+          <ul id="message-log"></ul>
+        </div>
+
+        <p class="note">
+          The Theremini does not expose raw capacitance directly over standard
+          MIDI, so this visual uses incoming messages as a disturbance proxy.
+        </p>
+        <p class="note">
+          Kinect mode expects the local bridge at <code>http://localhost:8182</code>. Run <code>start-kinect-bridge.ps1</code> and close any other app that may already be using the sensor.
+        </p>
+        <p class="note">
+          Foil experiments can change capacitance dramatically. Start with loose, external pieces near the antenna before wrapping anything, and avoid blocking vents or power sections.
+        </p>
+      </section>
+
+      <section class="panel panel--viz">
+        <canvas id="field-canvas" aria-label="Theremini field visualization"></canvas>
+      </section>
+    </main>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
