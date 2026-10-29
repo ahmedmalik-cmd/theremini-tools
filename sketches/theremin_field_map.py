@@ -4,7 +4,6 @@ import threading
 import time
 import math
 import pygame
-import numpy as np
 
 # ── config ────────────────────────────────────────────────────────────────────
 MIDI_PORT  = os.environ.get("THEREMINI_PORT", "Moog Theremini 0")
@@ -155,7 +154,6 @@ def main():
     font_sm = pygame.font.SysFont("monospace", 11)
 
     trail = []          # list of (x, y, col) for the crossfield trail
-    field_surf = pygame.Surface((W, H), pygame.SRCALPHA)
 
     running = True
     while running:

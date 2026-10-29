@@ -19,6 +19,8 @@ jobs:
         run: |
           pip install pyflakes
           python -m py_compile $(git ls-files '*.py')
-          pyflakes $(git ls-files '*.py')
+          # the OpenGL sketches use `from OpenGL.GL import *`; ignore that noise, fail on anything else
+          pyflakes $(git ls-files '*.py') | grep -v "import \*' used\|defined from star imports" > lint.txt || true
+          cat lint.txt; test ! -s lint.txt
       - name: JavaScript syntax
         run: for f in $(git ls-files 'field-visualizer/*.js'); do node --check "$f"; done

@@ -5,7 +5,6 @@ import time
 import math
 import random
 import pygame
-import numpy as np
 
 MIDI_PORT = os.environ.get("THEREMINI_PORT", "Moog Theremini 0")
 CC_VOLUME = 2

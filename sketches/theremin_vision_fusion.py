@@ -105,7 +105,6 @@ def classify_gesture(landmarks):
 
     # finger extended = tip y < pip y (in normalized coords, y increases downward)
     # thumb extended = tip x further from wrist than mcp
-    wrist = lm(0)
 
     def extended(tip_i, pip_i):
         return lm(tip_i).y < lm(pip_i).y
@@ -356,7 +355,7 @@ def main():
 
     running = True
     while running:
-        dt = clock.tick(FPS) / 1000.0
+        clock.tick(FPS)
 
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT: running = False
@@ -421,12 +420,9 @@ def main():
         if len(traj) > 1:
             for i in range(1, len(traj)):
                 tx, ty, tp, tv, ta, ts = traj[i]
-                ox, oy = traj[i-1][:2]
                 age = i / len(traj)
                 px_ = int(10 + tx * cam_panel_w)
                 py_ = int(10 + ty * cam_panel_h)
-                opx = int(10 + ox * cam_panel_w)
-                opy = int(10 + oy * cam_panel_h)
                 col = lerpC((40,80,200),(220,60,140), tv/(tp+tv+1e-6))
                 alpha_s = pygame.Surface((4,4), pygame.SRCALPHA)
                 pygame.draw.circle(alpha_s, (*col, int(age*160)), (2,2), 2)

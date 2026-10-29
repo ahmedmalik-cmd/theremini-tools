@@ -456,7 +456,7 @@ def update_runtime_caption(cc20, cc2):
 
 
 def apply_disturbance(pts, velocities, origin, cc20, cc2, face_metrics, hand_metrics, time_s, dt, intensity):
-    global cc20_prev, cc20_delta, cc20_vel, smoothed_cc20, smoothed_cc2, smoothed_swing, swish_energy, shape_mode, smear_hold
+    global cc20_prev, cc20_delta, cc20_vel, smoothed_cc20, smoothed_cc2, smoothed_swing, swish_energy, smear_hold
 
     cc20_delta = cc20 - cc20_prev
     cc20_vel = 0.7 * cc20_vel + 0.3 * abs(cc20_delta)

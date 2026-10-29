@@ -69,7 +69,6 @@ class KINECT_CTX:
             return
 
         # Initialize sensor — depth only
-        init_fn = self.dll.NuiInitialize  # global init (older SDK path)
         # Try instance method first
         try:
             # sensor is an IINuiSensor COM object; call through vtable via ctypes
@@ -116,7 +115,6 @@ class KINECT_CTX:
         # Get locked rect from the texture
         try:
             # INuiFrameTexture vtable: LockRect is at index 4
-            texture = ctypes.c_void_p(frame.pFrameTexture)
             LockRect_type = ctypes.WINFUNCTYPE(
                 ctypes.c_int,
                 ctypes.c_void_p,   # this
